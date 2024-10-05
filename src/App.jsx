@@ -108,7 +108,8 @@ class Homepage extends React.Component {
 	return (
 	<div>
 		{/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
-    
+    <h2>Free Seats</h2>
+    <p>{`Free Seats In Total: ${100 - this.props.travellers.length}`}</p>
 	</div>);
 	}
 }
@@ -123,7 +124,7 @@ class TicketToRide extends React.Component {
   setSelector(value)
   {
   	/*Q2. Function to set the value of component selector variable based on user's button click.*/
-
+    this.setState({selector: value});
   }
   componentDidMount() {
     this.loadData();
@@ -148,12 +149,29 @@ class TicketToRide extends React.Component {
         <h1>Ticket To Ride</h1>
 	<div>
 	    {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
-     
+      <button onClick={() => this.setSelector(1)}>Homepage</button>
+      <button onClick={() => this.setSelector(2)}>Display Travellers</button>
+      <button onClick={() => this.setSelector(3)}>Add Travellers</button>
+      <button onClick={() => this.setSelector(4)}>Delete Travellers</button>
 	</div>
 	<div>
 		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-    
+    {this.state.selector === 1 && (
+          <div>
+            <Homepage travellers={this.state.travellers} />
+            
+            <h2>Seat Reservation Status</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', width: '320px' }}>
+              {Array.from({length: 10}, (_, i) => {
+                const isOccupied = this.state.travellers.length;
+                return (<div key={i} style={{width: '15px', height: '15px', backgroundColor: isOccupied ? 'grey' : 'green', margin: '3px'}}></div>
+                );
+              })}
+            </div>
+          </div>
+      )}
+  
 		{/*Q3. Code to call component that Displays Travellers.*/}
 		
 		{/*Q4. Code to call the component that adds a traveller.*/}
