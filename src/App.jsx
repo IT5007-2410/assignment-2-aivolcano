@@ -27,17 +27,28 @@ const initialTravellers = [
 
 function TravellerRow(props) {
   {/*Q3. Placeholder to initialize local variable based on traveller prop.*/}
+  const traveller = props.traveller;
   return (
     <tr>
 	  {/*Q3. Placeholder for rendering one row of a table with required traveller attribute values.*/}
+    <td>{traveller.id}</td>
+    <td>{traveller.name}</td>
+    <td>{traveller.phone}</td>
+    <td>{traveller.bookingTime.toLocaleString()}</td>
+    <td>{traveller.email}</td>
+    <td>{traveller.origin}</td>
+    <td>{traveller.destination}</td>
+    <td>{traveller.seatNumber}</td>
+    <td>{traveller.ticketPrice}</td>
+    <td>{traveller.isPaid ? 'Paid': 'Unpaid'}</td>
     </tr>
   );
 }
 
 function Display(props) {
-  
+  console.log("display:", props.travellers);
 	/*Q3. Write code to render rows of table, reach corresponding to one traveller. Make use of the TravellerRow function that draws one row.*/
-
+  
   return (
     <table className="bordered-table">
       <thead>
@@ -47,10 +58,21 @@ function Display(props) {
           <th>Name</th>
           <th>Phone</th>
           <th>Booking Time</th>
+          <th>Email</th>
+          <th>Origin</th>
+          <th>Destination</th>
+          <th>Seat Number</th>
+          <th>Ticket Price</th>
+          <th>Paid Status</th>
         </tr>
       </thead>
       <tbody>
         {/*Q3. write code to call the JS variable defined at the top of this function to render table rows.*/}
+        {
+            props.travellers.map(t => (
+              <TravellerRow key={t.id} traveller={t} /> // 将单个旅客对象传递给 TravellerRow
+            ))
+        }
       </tbody>
     </table>
   );
@@ -173,6 +195,7 @@ class TicketToRide extends React.Component {
       )}
   
 		{/*Q3. Code to call component that Displays Travellers.*/}
+    {this.state.selector === 2 && (<Display travellers={this.state.travellers}/>)}
 		
 		{/*Q4. Code to call the component that adds a traveller.*/}
 		{/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
