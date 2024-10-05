@@ -21,7 +21,7 @@ const initialTravellers = [
     ticketPrice: 100.00,
   },
 ];
-let travellerId = 1;
+let travellerId = 3;
 
 
 function TravellerRow(props) {
@@ -96,6 +96,7 @@ class Add extends React.Component {
       alert("Name and phone are required.");
       return; 
     }
+    const newId = Math.floor(Math.random() * 1000);
   
     const newTraveller = {
       id: travellerId++,
@@ -174,7 +175,7 @@ class Homepage extends React.Component {
 	<div>
 		{/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
     <h2>Free Seats</h2>
-    <p>{`Free Seats In Total: ${100 - this.props.travellers.length}`}</p>
+    <p>{`Free Seats In Total: ${50 - this.props.travellers.length}`}</p>
 	</div>);
 	}
 }
@@ -231,14 +232,13 @@ class TicketToRide extends React.Component {
       <button onClick={() => this.setSelector(3)}>Add Travellers</button>
       <button onClick={() => this.setSelector(4)}>Delete Travellers</button>
 	</div>
-  
+
 	<div>
 		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-    {this.state.selector === 1 && (
+    {/* {this.state.selector === 1 && (
           <div>
             <Homepage travellers={this.state.travellers} />
-            
             <h2>Seat Reservation Status</h2>
             <div style={{ display: 'flex', flexWrap: 'wrap', width: '320px' }}>
               {Array.from({length: 10}, (_, i) => {
@@ -248,8 +248,33 @@ class TicketToRide extends React.Component {
               })}
             </div>
           </div>
-      )}
-  
+      )} */}
+
+    {this.state.selector === 1 && (
+            <div>
+              <h2>Free Seats</h2>
+
+              {/* 在JSX中计算总座位、已预订座位、空闲座位 */}
+              <p>{`Free Seats In Total: ${50 - this.state.travellers.length} / 50`}</p>
+
+              {/* 构造座位数组 */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', width: '300px' }}>
+                {Array.from({ length: 50 }, (_, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      backgroundColor: index < this.state.travellers.length ? 'grey' : 'green',
+                      margin: '5px',
+                      borderRadius: '5px',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
 		{/*Q3. Code to call component that Displays Travellers.*/}
     {this.state.selector === 2 && (<Display travellers={this.state.travellers} deleteTraveller={this.deleteTraveller} />)}
 		
