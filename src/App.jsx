@@ -20,8 +20,78 @@ const initialTravellers = [
     seatNumber: 'B2',
     ticketPrice: 100.00,
   },
+  {
+    id: 3, name: 'Rose', phone: 88884444,
+    bookingTime: new Date(),
+    email: 'rose@ntu.edu.sg',
+    origin: 'Singapore',
+    destination: 'Chiang Mai',
+    travelDate: new Date('2024-10-02'),
+    seatNumber: 'B2',
+    ticketPrice: 100.00,
+  },
+  {
+    id: 4, name: 'Rose', phone: 88884444,
+    bookingTime: new Date(),
+    email: 'rose@ntu.edu.sg',
+    origin: 'Singapore',
+    destination: 'Chiang Mai',
+    travelDate: new Date('2024-10-02'),
+    seatNumber: 'B2',
+    ticketPrice: 100.00,
+  },
+  {
+    id: 5, name: 'Rose', phone: 88884444,
+    bookingTime: new Date(),
+    email: 'rose@ntu.edu.sg',
+    origin: 'Singapore',
+    destination: 'Chiang Mai',
+    travelDate: new Date('2024-10-02'),
+    seatNumber: 'B2',
+    ticketPrice: 100.00,
+  },
+  {
+    id: 6, name: 'Rose', phone: 88884444,
+    bookingTime: new Date(),
+    email: 'rose@ntu.edu.sg',
+    origin: 'Singapore',
+    destination: 'Chiang Mai',
+    travelDate: new Date('2024-10-02'),
+    seatNumber: 'B2',
+    ticketPrice: 100.00,
+  },
+  {
+    id: 7, name: 'Rose', phone: 88884444,
+    bookingTime: new Date(),
+    email: 'rose@ntu.edu.sg',
+    origin: 'Singapore',
+    destination: 'Chiang Mai',
+    travelDate: new Date('2024-10-02'),
+    seatNumber: 'B2',
+    ticketPrice: 100.00,
+  },
+  {
+    id: 8, name: 'Rose', phone: 88884444,
+    bookingTime: new Date(),
+    email: 'rose@ntu.edu.sg',
+    origin: 'Singapore',
+    destination: 'Chiang Mai',
+    travelDate: new Date('2024-10-02'),
+    seatNumber: 'B2',
+    ticketPrice: 100.00,
+  },
+  {
+    id: 9, name: 'Rose', phone: 88884444,
+    bookingTime: new Date(),
+    email: 'rose@ntu.edu.sg',
+    origin: 'Singapore',
+    destination: 'Chiang Mai',
+    travelDate: new Date('2024-10-02'),
+    seatNumber: 'B2',
+    ticketPrice: 100.00,
+  },
 ];
-let travellerId = 3;
+let travellerId = 20;
 
 
 function TravellerRow(props) {
@@ -91,6 +161,12 @@ class Add extends React.Component {
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
     const name = e.target.travellername.value.trim();
     const phone = e.target.travellerphone.value.trim();
+    // const email = e.target.travelleremail.value.trim();
+    // const origin = e.target.travellerorigin.value.trim();
+    // const destination = e.target.travellerdestination.value.trim();
+    // const seatNumber = e.target.travellerseatnumber.value.trim();
+    // const ticketPriceValue = e.target.travellerticketprice.value.trim();
+
     
     if (!name || !phone) {
       alert("Name and phone are required.");
@@ -106,7 +182,7 @@ class Add extends React.Component {
       origin: e.target.travellerorigin.value,
       destination: e.target.travellerdestination.value,
       seatNumber: e.target.travellerseatnumber.value,
-      ticketPrice: parseFloat(e.target.travellerticketprice.value),
+      ticketPrice: e.target.travellerticketprice.value,
       bookingTime: new Date(),
     };
     this.props.bookTraveller(newTraveller);
@@ -175,7 +251,24 @@ class Homepage extends React.Component {
 	<div>
 		{/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
     <h2>Free Seats</h2>
-    <p>{`Free Seats In Total: ${50 - this.props.travellers.length}`}</p>
+        <div>Booked Seats: {this.props.travellers.length}</div>
+        <div>Free Seats: {10 - this.props.travellers.length}</div>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', width: '200px' }}>
+          {Array.from({ length: 10 }, (_, index) => (
+            <div
+              key={index}
+              style={{
+                width: '30px',
+                height: '30px',
+                backgroundColor:
+                  index < this.props.travellers.length ? 'grey' : 'green',
+                margin: '5px',
+                borderRadius: '5px',
+              }}
+            />
+          ))}
+      </div>
 	</div>);
 	}
 }
@@ -205,9 +298,8 @@ class TicketToRide extends React.Component {
 
   bookTraveller(passenger) {
 	    /*Q4. Write code to add a passenger to the traveller state variable.*/
-      console.log("bookTraveller:", passenger);
       if (this.state.travellers.length >= 10) {
-        alert('No more seats available. The train is full.');
+        alert('Cannot add traveller: Train is full.');
         return;
       }
       const updatedTravellers = this.state.travellers.concat(passenger);
@@ -217,18 +309,12 @@ class TicketToRide extends React.Component {
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
     console.log("deleteTraveller:", passenger);
-
-    if (this.state.travellers.length === 0) {
-      alert('No travellers need to delete.');
-      return;
-    }
   
     const passengerid = parseInt(passenger);
     const exists = this.state.travellers.some(traveller => traveller.id === passengerid);
     if (!exists) {alert(`Traveller with ID number ${passengerid} does not exist.`);
       return;
     };
-
     const updatedTravellers = this.state.travellers.filter(t => t.id !== passengerid);
     this.setState({travellers: updatedTravellers});
   }
@@ -247,61 +333,7 @@ class TicketToRide extends React.Component {
 	<div>
 		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-    {this.state.selector === 1 && (
-  <div>
-    <h2>Free Seats</h2>
-    <p>{`Free Seats In Total: ${50 - this.state.travellers.length} / 50`}</p>
-
-    {/* 构造座位布局，使用不同的颜色表示不同的座位类型 */}
-    <div style={{ display: 'flex', flexWrap: 'wrap', width: '250px' }}> {/* 设置宽度为 250px 以确保每行5个座位 */}
-      {Array.from({ length: 50 }, (_, index) => {
-        const isReserved = index < this.state.travellers.length;
-        let seatColor = 'green'; // 标准座位
-
-        if (index < 5) {
-          seatColor = 'orange'; // Briva Legroom Seat
-        } else if (index < 25) {
-          seatColor = 'darkgreen'; // Forward Zone Seat
-        }
-
-        return (
-          <div
-            key={index}
-            style={{
-              width: '40px',  // 每个座位的宽度
-              height: '40px',  // 每个座位的高度
-              backgroundColor: isReserved ? 'grey' : seatColor,
-              margin: '5px',
-              borderRadius: '5px',
-            }}
-          />
-        );
-      })}
-    </div>
-
-    {/* 图例 */}
-    <div style={{ marginTop: '20px' }}>
-      <h3>Legend</h3>
-      <div style={{ display: 'flex', gap: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ width: '20px', height: '20px', backgroundColor: 'orange', marginRight: '5px' }}></div>
-          <span>Briva Legroom Seat</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ width: '20px', height: '20px', backgroundColor: 'darkgreen', marginRight: '5px' }}></div>
-          <span>Forward Zone Seat</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ width: '20px', height: '20px', backgroundColor: 'green', marginRight: '5px' }}></div>
-          <span>Standard Seat</span>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
-
-
+    {this.state.selector === 1 && (<Homepage travellers={this.state.travellers} />)}
 
 		{/*Q3. Code to call component that Displays Travellers.*/}
     {this.state.selector === 2 && (<Display travellers={this.state.travellers} deleteTraveller={this.deleteTraveller} />)}
