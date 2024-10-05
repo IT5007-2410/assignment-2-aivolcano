@@ -3,10 +3,24 @@ const initialTravellers = [
   {
     id: 1, name: 'Jack', phone: 88885555,
     bookingTime: new Date(),
+    email: 'jack@nus.edu.sg',
+    origin: 'Singapore',
+    destination: 'Kuala Lumpur',
+    travelDate: new Date('2024-10-01'),
+    seatNumber: 'D1',
+    ticketPrice: 50.50,
+    isPaid: true,
   },
   {
     id: 2, name: 'Rose', phone: 88884444,
     bookingTime: new Date(),
+    email: 'rose@ntu.edu.sg',
+    origin: 'Singapore',
+    destination: 'Chiang Mai',
+    travelDate: new Date('2024-10-02'),
+    seatNumber: 'B2',
+    ticketPrice: 100.00,
+    isPaid: false,
   },
 ];
 
@@ -94,6 +108,7 @@ class Homepage extends React.Component {
 	return (
 	<div>
 		{/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
+    
 	</div>);
 	}
 }
@@ -108,6 +123,7 @@ class TicketToRide extends React.Component {
   setSelector(value)
   {
   	/*Q2. Function to set the value of component selector variable based on user's button click.*/
+
   }
   componentDidMount() {
     this.loadData();
@@ -132,10 +148,12 @@ class TicketToRide extends React.Component {
         <h1>Ticket To Ride</h1>
 	<div>
 	    {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
+     
 	</div>
 	<div>
 		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
+    
 		{/*Q3. Code to call component that Displays Travellers.*/}
 		
 		{/*Q4. Code to call the component that adds a traveller.*/}
