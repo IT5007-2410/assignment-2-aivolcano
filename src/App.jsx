@@ -9,7 +9,6 @@ const initialTravellers = [
     travelDate: new Date('2024-10-01'),
     seatNumber: 'D1',
     ticketPrice: 50.50,
-    isPaid: true,
   },
   {
     id: 2, name: 'Rose', phone: 88884444,
@@ -20,9 +19,9 @@ const initialTravellers = [
     travelDate: new Date('2024-10-02'),
     seatNumber: 'B2',
     ticketPrice: 100.00,
-    isPaid: false,
   },
 ];
+let travellerId = 1;
 
 
 function TravellerRow(props) {
@@ -40,7 +39,6 @@ function TravellerRow(props) {
     <td>{traveller.destination}</td>
     <td>{traveller.seatNumber}</td>
     <td>{traveller.ticketPrice}</td>
-    <td>{traveller.isPaid ? 'Paid': 'Unpaid'}</td>
     </tr>
   );
 }
@@ -63,7 +61,6 @@ function Display(props) {
           <th>Destination</th>
           <th>Seat Number</th>
           <th>Ticket Price</th>
-          <th>Paid Status</th>
         </tr>
       </thead>
       <tbody>
@@ -85,8 +82,32 @@ class Add extends React.Component {
   }
 
   handleSubmit(e) {
+    console.log("add:", e);
     e.preventDefault();
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
+    const name = e.target.travellername.value.trim();
+    const phone = e.target.travellerphone.value.trim();
+    
+    if (!name || !phone) {
+      alert("Name and phone are required.");
+      return; 
+    }
+  
+    const newTraveller = {
+      id: travellerId++,
+      name: e.target.travellername.value,
+      phone: e.target.travellerphone.value,
+      email: e.target.travelleremail.value,
+      origin: e.target.travellerorigin.value,
+      destination: e.target.travellerdestination.value,
+      seatNumber: e.target.travellerseatnumber.value,
+      ticketPrice: parseFloat(e.target.travellerticketprice.value),
+      bookingTime: new Date(),
+    };
+    this.props.bookTraveller(newTraveller);
+    //reset the form
+    // this.setState({ name: '', phone: '', email: '', origin: '', destination: '', seatNumber: '', ticketPrice: '', bookingTime: '' });
+    e.target.reset();
   }
 
   render() {
@@ -94,6 +115,13 @@ class Add extends React.Component {
       <form name="addTraveller" onSubmit={this.handleSubmit}>
 	    {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
         <input type="text" name="travellername" placeholder="Name" />
+        <input type="text" name="travellerphone" placeholder="Phone" />
+        <input type="text" name="travelleremail" placeholder="Email" />
+        <input type="text" name="travellerorigin" placeholder="Origin" />
+        <input type="text" name="travellerdestination" placeholder="Destination" />
+        <input type="text" name="travellerseatnumber" placeholder="Seat Number" />
+        <input type="text" name="travellerticketprice" placeholder="Ticket Price" />
+
         <button>Add</button>
       </form>
     );
@@ -160,6 +188,8 @@ class TicketToRide extends React.Component {
 
   bookTraveller(passenger) {
 	    /*Q4. Write code to add a passenger to the traveller state variable.*/
+      const updatedTravellers = this.state.travellers.concat(passenger);
+      this.setState({travellers: updatedTravellers});
   }
 
   deleteTraveller(passenger) {
@@ -198,7 +228,9 @@ class TicketToRide extends React.Component {
     {this.state.selector === 2 && (<Display travellers={this.state.travellers}/>)}
 		
 		{/*Q4. Code to call the component that adds a traveller.*/}
+    {this.state.selector === 3 && (<Add bookTraveller={this.bookTraveller}/>)}
 		{/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
+    
 	</div>
       </div>
     );
