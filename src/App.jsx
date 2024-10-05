@@ -205,6 +205,11 @@ class TicketToRide extends React.Component {
 
   bookTraveller(passenger) {
 	    /*Q4. Write code to add a passenger to the traveller state variable.*/
+      console.log("bookTraveller:", passenger);
+      if (this.state.travellers.length >= 10) {
+        alert('No more seats available. The train is full.');
+        return;
+      }
       const updatedTravellers = this.state.travellers.concat(passenger);
       this.setState({travellers: updatedTravellers});
   }
@@ -212,12 +217,18 @@ class TicketToRide extends React.Component {
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
     console.log("deleteTraveller:", passenger);
+
+    if (this.state.travellers.length === 0) {
+      alert('No travellers need to delete.');
+      return;
+    }
   
     const passengerid = parseInt(passenger);
     const exists = this.state.travellers.some(traveller => traveller.id === passengerid);
     if (!exists) {alert(`Traveller with ID number ${passengerid} does not exist.`);
       return;
     };
+
     const updatedTravellers = this.state.travellers.filter(t => t.id !== passengerid);
     this.setState({travellers: updatedTravellers});
   }
@@ -236,44 +247,61 @@ class TicketToRide extends React.Component {
 	<div>
 		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-    {/* {this.state.selector === 1 && (
-          <div>
-            <Homepage travellers={this.state.travellers} />
-            <h2>Seat Reservation Status</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', width: '320px' }}>
-              {Array.from({length: 10}, (_, i) => {
-                const isOccupied = this.state.travellers.length;
-                return (<div key={i} style={{width: '15px', height: '15px', backgroundColor: isOccupied ? 'grey' : 'green', margin: '3px'}}></div>
-                );
-              })}
-            </div>
-          </div>
-      )} */}
-
     {this.state.selector === 1 && (
-            <div>
-              <h2>Free Seats</h2>
+  <div>
+    <h2>Free Seats</h2>
+    <p>{`Free Seats In Total: ${50 - this.state.travellers.length} / 50`}</p>
 
-              {/* 在JSX中计算总座位、已预订座位、空闲座位 */}
-              <p>{`Free Seats In Total: ${50 - this.state.travellers.length} / 50`}</p>
+    {/* 构造座位布局，使用不同的颜色表示不同的座位类型 */}
+    <div style={{ display: 'flex', flexWrap: 'wrap', width: '250px' }}> {/* 设置宽度为 250px 以确保每行5个座位 */}
+      {Array.from({ length: 50 }, (_, index) => {
+        const isReserved = index < this.state.travellers.length;
+        let seatColor = 'green'; // 标准座位
 
-              {/* 构造座位数组 */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', width: '300px' }}>
-                {Array.from({ length: 50 }, (_, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      width: '30px',
-                      height: '30px',
-                      backgroundColor: index < this.state.travellers.length ? 'grey' : 'green',
-                      margin: '5px',
-                      borderRadius: '5px',
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
+        if (index < 5) {
+          seatColor = 'orange'; // Briva Legroom Seat
+        } else if (index < 25) {
+          seatColor = 'darkgreen'; // Forward Zone Seat
+        }
+
+        return (
+          <div
+            key={index}
+            style={{
+              width: '40px',  // 每个座位的宽度
+              height: '40px',  // 每个座位的高度
+              backgroundColor: isReserved ? 'grey' : seatColor,
+              margin: '5px',
+              borderRadius: '5px',
+            }}
+          />
+        );
+      })}
+    </div>
+
+    {/* 图例 */}
+    <div style={{ marginTop: '20px' }}>
+      <h3>Legend</h3>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ width: '20px', height: '20px', backgroundColor: 'orange', marginRight: '5px' }}></div>
+          <span>Briva Legroom Seat</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ width: '20px', height: '20px', backgroundColor: 'darkgreen', marginRight: '5px' }}></div>
+          <span>Forward Zone Seat</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ width: '20px', height: '20px', backgroundColor: 'green', marginRight: '5px' }}></div>
+          <span>Standard Seat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
 
 		{/*Q3. Code to call component that Displays Travellers.*/}
     {this.state.selector === 2 && (<Display travellers={this.state.travellers} deleteTraveller={this.deleteTraveller} />)}
